@@ -9,3 +9,8 @@ export type IUser = {
   };
   phone: string;
 };
+
+export type IGroupedData = {
+  type: string;
+  value: number;
+};

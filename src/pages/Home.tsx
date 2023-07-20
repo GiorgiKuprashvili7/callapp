@@ -1,10 +1,10 @@
-import "../App.css";
 import { Button, Space, Layout } from "antd";
-import { Content, Header } from "antd/es/layout/layout";
+import { Content } from "antd/es/layout/layout";
 import { useState } from "react";
 import styles from "./style.module.css";
 import AddOrUpdateModal from "../components/AddOrUpdateModal";
 import UsersTable from "../components/UsersTable";
+import Navbar from "../components/Navbar";
 
 function Home() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +29,7 @@ function Home() {
     <>
       <Space direction="vertical" style={{ width: "100%" }} size={[0, 48]}>
         <Layout>
-          <Header className={styles.header}>Header</Header>
+          <Navbar />
           <Content className={styles.content}>
             <Button
               type="primary"

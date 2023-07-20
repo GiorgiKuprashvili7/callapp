@@ -4,13 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"vite\" \"npm run serve-json\"",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "serve-json": "json-server --watch db.json"
   },
   "dependencies": {
+    "@ant-design/charts": "^1.4.2",
     "antd": "^5.7.0",
     "axios": "^1.4.0",
     "json-server": "^0.17.3",

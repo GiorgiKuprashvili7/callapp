@@ -1,8 +1,9 @@
+import "./index.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home.tsx";
+import Analitics from "./pages/Analitics.tsx";
 
 const router = createBrowserRouter([
   {
@@ -11,7 +12,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/analitics",
-    element: <>analitics</>,
+    element: <Analitics />,
   },
 ]);
 

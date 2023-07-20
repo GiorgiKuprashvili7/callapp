@@ -1,15 +1,23 @@
 import create from "zustand";
-import { IUser } from "./type";
+import { IGroupedData, IUser } from "./type";
 
-interface CounterState {
-  setUsers: (newUsers: any) => void;
+interface UsersList {
+  setUsers: (newUsers: IUser[]) => void;
   users: IUser[];
+
+  setChartData: (newUsers: IGroupedData[]) => void;
+  chartData: IGroupedData[];
 }
 
-const useStore = create<CounterState>((set) => ({
+const useStore = create<UsersList>((set) => ({
   users: [],
-  setUsers: (newUsers: any) => {
+  setUsers: (newUsers: IUser[]) => {
     set({ users: newUsers });
+  },
+
+  chartData: [],
+  setChartData: (newUsers: IGroupedData[]) => {
+    set({ chartData: newUsers });
   },
 }));
 
