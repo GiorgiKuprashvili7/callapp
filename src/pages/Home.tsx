@@ -1,123 +1,53 @@
-import { Button, Table, Modal, Input } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
-import { useState, useEffect } from "react";
-import useStore from "../store";
-import { addUser, deleteUser, getUserData } from "../Api";
-
-import AddOrUpdateModal from "../components/addOrUpdateModal";
+import "../App.css";
+import { Button, Space, Layout } from "antd";
+import { Content, Header } from "antd/es/layout/layout";
+import { useState } from "react";
+import styles from "./style.module.css";
+import AddOrUpdateModal from "../components/AddOrUpdateModal";
+import UsersTable from "../components/UsersTable";
 
 function Home() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isCreateModal, setIsCreateModal] = useState(false);
-
-  const { users, setUsers } = useStore();
-
-  let colums = [
-    {
-      key: "1",
-      title: "ID",
-      dataIndex: "id",
-    },
-    {
-      key: "2",
-      title: "Name",
-      dataIndex: "name",
-    },
-    {
-      key: "3",
-      title: "email",
-      dataIndex: "email",
-    },
-    {
-      key: "4",
-      title: "Gender",
-      dataIndex: "gender",
-    },
-    {
-      key: "5",
-      title: "Phone",
-      dataIndex: "phone",
-    },
-    {
-      key: "6",
-      title: "Street",
-      dataIndex: "street",
-    },
-    {
-      key: "7",
-      title: "City",
-      dataIndex: "city",
-    },
-    {
-      key: "8",
-      render: (record: any) => {
-        return (
-          <DeleteOutlined
-            onClick={() => {
-              deleteItem(record);
-            }}
-          />
-        );
-      },
-    },
-  ];
-
-  const fetchUsers = () => {
-    getUserData().then((resp) => {
-      setUsers(resp.data);
-    });
-  };
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const deleteItem = (record: any) => {
-    Modal.confirm({
-      title: "are u sure, you want to delete",
-      onOk: async () => {
-        await deleteUser(record.id);
-        fetchUsers();
-      },
-    });
-  };
+  const [updateId, setUpdateId] = useState<null | number>(null);
 
   const openCreateModal = () => {
+    setUpdateId(null);
     setIsOpen(true);
-    setIsCreateModal(true);
   };
 
-  const openUpdateModal = (record: any) => {
-    console.log(record);
-    setIsCreateModal(false);
+  const openUpdateModal = (id: any) => {
+    setUpdateId(id);
     setIsOpen(true);
   };
 
   const closeModal = () => {
     setIsOpen(false);
-    setIsCreateModal(true);
+    setUpdateId(null);
   };
 
   return (
     <>
-      <Button onClick={openCreateModal}>Add</Button>
+      <Space direction="vertical" style={{ width: "100%" }} size={[0, 48]}>
+        <Layout>
+          <Header className={styles.header}>Header</Header>
+          <Content className={styles.content}>
+            <Button
+              type="primary"
+              size="large"
+              onClick={openCreateModal}
+              className={styles.primaryButton}
+            >
+              Add User
+            </Button>
 
-      <Table
-        columns={colums}
-        dataSource={users.map((o: any) => ({
-          ...o,
-          street: o.address.street,
-          city: o.address.city,
-        }))}
-        onRow={(record) => ({
-          onDoubleClick: () => openUpdateModal(record),
-        })}
-      />
+            <UsersTable openUpdateModal={openUpdateModal} />
+          </Content>
+        </Layout>
+      </Space>
 
       <AddOrUpdateModal
         open={isOpen}
-        isCreateModal={isCreateModal}
-        
+        updateId={updateId}
         onCancel={closeModal}
       />
     </>

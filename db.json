@@ -572,7 +572,6 @@
       "phone": "+1 (870) 500-2974"
     },
     {
-      "id": 69,
       "name": "Anita Branch",
       "email": "anitabranch@gology.com",
       "gender": "female",
@@ -580,29 +579,8 @@
         "street": "Nassau Avenue",
         "city": "New York"
       },
-      "phone": "+1 (833) 549-3771"
-    },
-    {
-      "id": 70,
-      "name": "Downs Hatfield",
-      "email": "downshatfield@gology.com",
-      "gender": "male",
-      "address": {
-        "street": "Locust Avenue",
-        "city": "San Diego"
-      },
-      "phone": "+1 (813) 531-3665"
-    },
-    {
-      "id": 999,
-      "name": "sag",
-      "email": "sag",
-      "gender": "dag",
-      "address": {
-        "street": "sagsagg",
-        "city": "sagsagg"
-      },
-      "phone": "sagsagg"
+      "phone": "+1 (833) 549-3771",
+      "id": 69
     }
   ]
 }

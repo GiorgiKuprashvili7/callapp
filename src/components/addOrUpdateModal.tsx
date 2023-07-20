@@ -1,14 +1,13 @@
-import { Button, Table, Modal, Input, Select, Form, ModalProps } from "antd";
+import { Button, Modal, Input, Select, Form, ModalProps } from "antd";
 import { Option } from "antd/lib/mentions";
 
-import { useEffect, useState } from "react";
-import useStore from "store";
-import { addUser, deleteUser, getUserData } from "Api";
-import { getNewId } from "utils";
+import { useEffect } from "react";
+import { addUser, getUserById, getUserData, updateUser } from "../Api";
+import { generateRequestData, getNewId } from "../utils";
+import useStore from "../store";
 
 type addOrUpdateModalProps = {
-  isCreateModal: Boolean;
-  openUpdateModal: () => void;
+  updateId: number | null;
 } & ModalProps;
 
 const { Option: AntOption } = Select;
@@ -19,47 +18,77 @@ const genderOptions = [
   { value: "other", label: "Other" },
 ];
 
+const initialUserData = {
+  name: "",
+  email: "",
+  gender: "",
+  street: "",
+  city: "",
+  phone: "",
+};
+
 const AddOrUpdateModal = (props: addOrUpdateModalProps) => {
   const [form] = Form.useForm();
-  const [data, setData] = useState<any>(null);
+  const { users, setUsers } = useStore();
 
-  const handleSubmit = (values: any) => {
-    // Do something with the form data, e.g., send it to the server
-    console.log(values);
+  const fetchUsers = () => {
+    getUserData().then((resp) => {
+      setUsers(resp.data);
+    });
+  };
+
+  const handleSubmit = async (values: any) => {
+    if (props.updateId) {
+      await updateUser(props.updateId, generateRequestData(values));
+    } else {
+      await addUser(generateRequestData(values, getNewId(users)));
+    }
+
+    fetchUsers();
   };
 
   const fetchById = async (id: number) => {
     try {
-      // Your getById API call here and set the data state
-      // For example:
-      // const response = await api.getById(id);
-      // setData(response.data);
-      setData({
-        name: "John Doe",
-        email: "john@example.com",
-        gender: "male",
-        street: "123 Main St",
-        city: "New York",
-        phone: "123-456-7890",
-      });
-    } catch (error) {
-      // Handle error
-    }
+      const response = await getUserById(id);
+
+      let userData = {
+        name: response.data.name,
+        email: response.data.email,
+        gender: response.data.gender,
+        street: response.data.address.street,
+        city: response.data.address.city,
+        phone: response.data.phone,
+      };
+
+      form.setFieldsValue(userData);
+    } catch (error) {}
   };
-  // fetchUsers();
 
   useEffect(() => {
-    fetchById(props.);
-  }, []);
+    if (props.updateId) {
+      fetchById(props.updateId);
+    }
+  }, [props.updateId]);
 
   return (
     <Modal
-      title={props.isCreateModal ? "Add Client" : "Update Client"}
+      title={props.updateId ? "Update Client" : "Add Client"}
+      footer={false}
       open={props.open}
-      onCancel={props.onCancel}
-      onOk={props.onOk}
+      onCancel={(e) => {
+        props.onCancel?.(e);
+        form.setFieldsValue(initialUserData);
+      }}
     >
-      <Form layout="vertical" form={form} onFinish={handleSubmit}>
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={(e) => {
+          handleSubmit(e);
+          props.onCancel?.(e);
+          form.setFieldsValue(initialUserData);
+        }}
+      >
         <Form.Item
           label="Name"
           name="name"

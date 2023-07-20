@@ -1,0 +1,15 @@
+.primaryButton {
+  margin: 20px 0;
+}
+
+.header {
+  color: #fff;
+  height: 64px;
+  /* background-color: #7dbcea; */
+}
+
+.content {
+  padding: 0 50px;
+
+  background-color: white;
+}
