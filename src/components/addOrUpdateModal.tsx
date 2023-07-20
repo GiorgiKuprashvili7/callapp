@@ -1,7 +1,7 @@
 import { Button, Modal, Input, Select, Form, ModalProps } from "antd";
 import { Option } from "antd/lib/mentions";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { addUser, getUserById, getUserData, updateUser } from "../Api";
 import { generateRequestData, getNewId } from "../utils";
 import useStore from "../store";
@@ -30,6 +30,8 @@ const initialUserData = {
 const AddOrUpdateModal = (props: addOrUpdateModalProps) => {
   const [form] = Form.useForm();
   const { users, setUsers } = useStore();
+
+  const [userName, setUserName] = useState("");
 
   const fetchUsers = () => {
     getUserData().then((resp) => {
@@ -60,6 +62,8 @@ const AddOrUpdateModal = (props: addOrUpdateModalProps) => {
         phone: response.data.phone,
       };
 
+      setUserName(response.data.name);
+
       form.setFieldsValue(userData);
     } catch (error) {}
   };
@@ -72,7 +76,7 @@ const AddOrUpdateModal = (props: addOrUpdateModalProps) => {
 
   return (
     <Modal
-      title={props.updateId ? "Update Client" : "Add Client"}
+      title={props.updateId ? `Update ${userName}` : "Add Client"}
       footer={false}
       open={props.open}
       onCancel={(e) => {

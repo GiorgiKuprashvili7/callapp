@@ -43,3 +43,13 @@ export const groupByCity = (data: IUser[]) => {
 
   return result;
 };
+
+export const generateTableData = (data: IUser[]) => {
+  const tableData = data.map((o: IUser) => ({
+    ...o,
+    street: o.address.street,
+    city: o.address.city,
+  }));
+
+  return tableData;
+};

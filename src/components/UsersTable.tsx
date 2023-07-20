@@ -3,6 +3,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import useStore from "../store";
 import { deleteUser, getUserData } from "../Api";
+import { generateTableData } from "../utils";
 
 const UsersTable = ({
   openUpdateModal,
@@ -40,7 +41,7 @@ const UsersTable = ({
     },
     {
       key: "3",
-      title: "email",
+      title: "Email",
       dataIndex: "email",
     },
     {
@@ -84,11 +85,7 @@ const UsersTable = ({
   return (
     <Table
       columns={columns}
-      dataSource={users.map((o: any) => ({
-        ...o,
-        street: o.address.street,
-        city: o.address.city,
-      }))}
+      dataSource={generateTableData(users)}
       onRow={(record) => ({
         onDoubleClick: () => {
           openUpdateModal?.(record.id);

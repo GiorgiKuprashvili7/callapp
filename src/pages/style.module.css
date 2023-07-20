@@ -1,21 +1,24 @@
+:root {
+  --color-white: #ffffff;
+}
+
 .primaryButton {
   margin: 20px 0;
 }
 
 .header {
-  color: #fff;
+  color: var(--color-white);
   height: 64px;
-  /* background-color: #7dbcea; */
 }
 
 .content {
   padding: 0 50px;
 
-  background-color: white;
+  background-color: var(--color-white);
 }
 
 .navLink {
-  color: white;
+  color: var(--color-white);
   font-weight: bold;
   font-size: 16px;
 }
